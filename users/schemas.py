@@ -1,5 +1,4 @@
-import re
-
+# import re
 from fastapi import HTTPException
 from fastapi import status
 from pydantic import BaseModel
@@ -7,8 +6,9 @@ from pydantic import ConfigDict
 from pydantic import EmailStr
 from pydantic import field_validator
 
-from core.config import PASSWORD_VALIDATOR
 from core.models import Role
+
+# from core.config import PASSWORD_VALIDATOR
 
 
 class UserBaseSchema(BaseModel):
@@ -46,14 +46,14 @@ class UserSchema(UserBaseSchema):
 class UserCreateSchema(UserBaseSchema):
     password: str
 
-    @field_validator("password")
-    def validate_password(cls, value):
-        validator = re.search(re.compile(PASSWORD_VALIDATOR), value)
-        if validator:
-            return value
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="The password length should be between 6 and 20 characters. "
-            "The password must include at least one digit, at least one uppercase and "
-            "one lowercase character and at least one special character.",
-        )
+    # @field_validator("password")
+    # def validate_password(cls, value):
+    #     validator = re.search(re.compile(PASSWORD_VALIDATOR), value)
+    #     if validator:
+    #         return value
+    #     raise HTTPException(
+    #         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+    #         detail="The password length should be between 6 and 20 characters. "
+    #         "The password must include at least one digit, at least one uppercase and "
+    #         "one lowercase character and at least one special character.",
+    #     )
