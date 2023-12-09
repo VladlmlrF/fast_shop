@@ -1,3 +1,5 @@
+from enum import Enum
+
 from sqlalchemy import Boolean
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
@@ -6,8 +8,15 @@ from sqlalchemy.orm import mapped_column
 from .base import Base
 
 
+class Role(str, Enum):
+    ORDINARY_USER = "ORDINARY_USER"
+    ADMIN = "ADMIN"
+    SUPER_ADMIN = "SUPER_ADMIN"
+
+
 class User(Base):
     username: Mapped[str] = mapped_column(String(40), unique=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     hashed_password: Mapped[str]
+    role: Mapped[Role] = mapped_column(String, default=Role.ORDINARY_USER)
