@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from fastapi import status
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from pydantic import EmailStr
 from pydantic import field_validator
 
@@ -19,9 +20,21 @@ class UserBaseSchema(BaseModel):
         return value
 
 
+class UserUpdateSchema(UserBaseSchema):
+    is_active: bool
+
+
+class UserUpdatePartialSchema(UserBaseSchema):
+    username: str | None = None
+    email: EmailStr | None = None
+    is_active: bool | None = None
+
+
 class UserSchema(UserBaseSchema):
     id: int
     is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserCreateSchema(UserBaseSchema):
