@@ -25,14 +25,9 @@ class UserBaseSchema(BaseModel):
         return value
 
 
-class UserUpdateSchema(UserBaseSchema):
-    is_active: bool
-
-
 class UserUpdatePartialSchema(UserBaseSchema):
     username: str | None = None
     email: EmailStr | None = None
-    is_active: bool | None = None
 
 
 class UserSchema(UserBaseSchema):
