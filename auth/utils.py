@@ -31,13 +31,6 @@ def verify_password(password: str, hashed_password: str) -> bool:
     return pwd_context.verify(password, hashed_password)
 
 
-async def get_user_by_username(session: AsyncSession, username: str) -> User | None:
-    """Get user by username"""
-    statement = select(User).where(User.username == username)
-    user: User | None = await session.scalar(statement=statement)
-    return user
-
-
 def create_access_token(
     payload: dict,
     algorithm: str = auth_settings.algorithm,
@@ -65,6 +58,13 @@ def decode_access_token(
     """Decode token"""
     decoded = jwt.decode(token=token, key=public_key, algorithms=[algorithm])
     return decoded
+
+
+async def get_user_by_username(session: AsyncSession, username: str) -> User | None:
+    """Get user by username"""
+    statement = select(User).where(User.username == username)
+    user: User | None = await session.scalar(statement=statement)
+    return user
 
 
 async def authenticate_user(
@@ -105,5 +105,24 @@ async def get_current_user(
         if not user:
             raise credentials_exception
         return user
+    except JWTError:
+        raise credentials_exception
+
+
+async def get_current_user_name(
+    token: Annotated[str, Depends(oauth2_scheme)],
+):
+    """Get current user"""
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload: dict = decode_access_token(token=token)
+        username: str | None = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        return username
     except JWTError:
         raise credentials_exception
