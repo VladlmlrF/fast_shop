@@ -11,6 +11,7 @@ from .base import Base
 if TYPE_CHECKING:
     from .coupon import Coupon
     from .order_item import OrderItem
+    from .user import User
 
 
 class Order(Base):
@@ -24,9 +25,11 @@ class Order(Base):
     paid: Mapped[bool] = mapped_column(default=False)
     coupon_id: Mapped[int] = mapped_column(ForeignKey("coupons.id"))
     discount: Mapped[int] = mapped_column(default=0, server_default="0")
+    user_id: Mapped[int]
 
     coupon: Mapped["Coupon"] = relationship(back_populates="orders")
     order_items: Mapped["OrderItem"] = relationship(back_populates="order_items")
+    user: Mapped["User"] = relationship(back_populates="orders")
 
     @property
     def get_total_cost_before_discount(self):

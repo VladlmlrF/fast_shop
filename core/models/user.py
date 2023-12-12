@@ -1,11 +1,16 @@
 from enum import Enum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
 
 from .base import Base
+
+if TYPE_CHECKING:
+    from .order import Order
 
 
 class Role(str, Enum):
@@ -20,6 +25,8 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     hashed_password: Mapped[str]
     role: Mapped[Role] = mapped_column(String, default=Role.ORDINARY_USER)
+
+    orders: Mapped[list["Order"]] = relationship(back_populates="user")
 
     @property
     def is_super_admin(self) -> bool:
