@@ -15,8 +15,16 @@ class Role(str, Enum):
 
 
 class User(Base):
-    username: Mapped[str] = mapped_column(String(40), unique=True)
+    username: Mapped[str] = mapped_column(String(40), unique=True, index=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     hashed_password: Mapped[str]
     role: Mapped[Role] = mapped_column(String, default=Role.ORDINARY_USER)
+
+    @property
+    def is_super_admin(self) -> bool:
+        return Role.SUPER_ADMIN == self.role
+
+    @property
+    def is_admin(self) -> bool:
+        return Role.ADMIN == self.role
