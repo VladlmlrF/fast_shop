@@ -16,6 +16,7 @@ class Product(Base):
     manufacturer: Mapped[str]
     description: Mapped[str]
     price: Mapped[int]
+    available: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
     orders_details: Mapped[list["OrderItem"]] = relationship(back_populates="product")
