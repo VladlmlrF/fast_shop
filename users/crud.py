@@ -19,9 +19,15 @@ async def create_user(session: AsyncSession, user: UserCreateSchema) -> User:
         email=user.email,
         hashed_password=get_password_hash(user.password),
     )
-    session.add(new_user)
-    await session.commit()
-    return new_user
+    try:
+        session.add(new_user)
+        await session.commit()
+        return new_user
+    except HTTPException:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User with that username or email already exists!",
+        )
 
 
 async def create_super_admin(session: AsyncSession, user: UserCreateSchema) -> User:
