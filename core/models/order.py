@@ -25,10 +25,10 @@ class Order(Base):
     paid: Mapped[bool] = mapped_column(default=False)
     coupon_id: Mapped[int] = mapped_column(ForeignKey("coupons.id"))
     discount: Mapped[int] = mapped_column(default=0, server_default="0")
-    user_id: Mapped[int]
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
     coupon: Mapped["Coupon"] = relationship(back_populates="orders")
-    order_items: Mapped["OrderItem"] = relationship(back_populates="order_items")
+    order_items: Mapped["OrderItem"] = relationship(back_populates="order")
     user: Mapped["User"] = relationship(back_populates="orders")
 
     @property
