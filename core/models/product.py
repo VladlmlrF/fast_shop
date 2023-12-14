@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class Product(Base):
-    name: Mapped[str]
+    name: Mapped[str] = mapped_column(unique=True)
     manufacturer: Mapped[str]
     description: Mapped[str]
     price: Mapped[int]
