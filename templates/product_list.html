@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    Fast Shop
+{% endblock %}
+
+{% block content %}
+  <div id="main" class="product-list">
+    {% for product in products %}
+      <div class="item">
+        <h2><a href="{{ url_for('product_detail', product_name=product.name) }}">{{ product.name }}</a></h2>
+        <br>
+        <div id="price">
+          ${{ product.price }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
