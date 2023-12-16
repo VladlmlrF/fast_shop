@@ -9,6 +9,7 @@ class ProductBaseSchema(BaseModel):
     manufacturer: str
     description: str
     price: int
+    available: bool
 
     @field_validator("price")
     def validate_price(cls, value):
@@ -29,6 +30,7 @@ class ProductUpdatePartialSchema(ProductBaseSchema):
     manufacturer: str | None = None
     description: str | None = None
     price: int | None = None
+    available: bool | None = None
 
 
 class ProductSchema(ProductBaseSchema):
