@@ -5,9 +5,10 @@ __all__ = (
     "User",
     "Role",
     "Product",
-    "OrderItem",
+    "CartItem",
     "Order",
     "Coupon",
+    "Cart",
 )
 
 from .base import Base
@@ -15,6 +16,7 @@ from .db_helper import DatabaseHelper, db_helper
 from .user import User
 from .user import Role
 from .product import Product
-from .order_item import OrderItem
+from .cart_item import CartItem
 from .order import Order
 from .coupon import Coupon
+from .cart import Cart

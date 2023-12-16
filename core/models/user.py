@@ -11,6 +11,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .order import Order
+    from .order import Cart
 
 
 class Role(str, Enum):
@@ -27,6 +28,7 @@ class User(Base):
     role: Mapped[Role] = mapped_column(String, default=Role.ORDINARY_USER)
 
     orders: Mapped[list["Order"]] = relationship(back_populates="user")
+    carts: Mapped[list["Cart"]] = relationship(back_populates="user")
 
     @property
     def is_super_admin(self) -> bool:
