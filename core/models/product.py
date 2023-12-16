@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from .base import Base
 
 if TYPE_CHECKING:
-    from .order_item import OrderItem
+    from .cart_item import CartItem
 
 
 class Product(Base):
@@ -19,4 +19,4 @@ class Product(Base):
     available: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
-    orders_details: Mapped[list["OrderItem"]] = relationship(back_populates="product")
+    cart_items: Mapped[list["CartItem"]] = relationship(back_populates="product")
