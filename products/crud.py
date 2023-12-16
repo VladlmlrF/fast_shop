@@ -41,6 +41,15 @@ async def get_product(session: AsyncSession, product_id: int) -> Product | None:
     return await session.get(Product, product_id)
 
 
+async def get_product_by_name(
+    session: AsyncSession, product_name: str
+) -> Product | None:
+    """Get product by name"""
+    statement = select(Product).where(Product.name == product_name)
+    product: Product | None = await session.scalar(statement)
+    return product
+
+
 async def upgrade_product(
     session: AsyncSession,
     product: Product,
