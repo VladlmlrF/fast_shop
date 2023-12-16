@@ -8,18 +8,18 @@ from sqlalchemy.orm import relationship
 from .base import Base
 
 if TYPE_CHECKING:
-    from .order import Order
+    from .cart import Cart
     from .product import Product
 
 
-class OrderItem(Base):
-    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
+class CartItem(Base):
+    cart_id: Mapped[int] = mapped_column(ForeignKey("carts.id"))
     product_id: Mapped[int] = mapped_column((ForeignKey("products.id")))
     price: Mapped[int] = mapped_column(default=1, server_default="1")
     quantity: Mapped[int] = mapped_column(default=1, server_default="1")
 
-    order: Mapped["Order"] = relationship(back_populates="order_items")
-    product: Mapped["Product"] = relationship(back_populates="orders_details")
+    cart: Mapped["Cart"] = relationship(back_populates="items")
+    product: Mapped["Product"] = relationship(back_populates="cart_items")
 
     @property
     def cost(self) -> int:
