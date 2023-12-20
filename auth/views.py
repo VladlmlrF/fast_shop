@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
+from fastapi import Response
 from fastapi import status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,6 +18,7 @@ router = APIRouter(tags=["Auth"])
 
 @router.post("/login", response_model=TokenDataSchema)
 async def login_for_access_token(
+    response: Response,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
@@ -31,4 +33,5 @@ async def login_for_access_token(
         )
     payload = {"sub": user.username, "username": user.username, "email": user.email}
     token = create_access_token(payload=payload)
+    response.set_cookie(key="access_token", value=f"Bearer {token}", httponly=True)
     return TokenDataSchema(access_token=token, token_type="Bearer")
