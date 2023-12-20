@@ -10,8 +10,8 @@ from auth.views import router as auth_router
 from coupons.views import router as coupon_router
 from orders.views import router as order_router
 from products.views import router as product_router
-from shop.router import router as shop_router
 from users.views import router as user_router
+from webapp.router import router as webapp_router
 
 app = FastAPI(title="Fast Shop")
 
@@ -48,7 +48,7 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(product_router, prefix="/products")
 app.include_router(coupon_router, prefix="/coupons")
 app.include_router(order_router, prefix="/order")
-app.include_router(shop_router, prefix="/shop")
+app.include_router(webapp_router, prefix="/shop")
 
 
 if __name__ == "__main__":
