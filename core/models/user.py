@@ -28,7 +28,7 @@ class User(Base):
     role: Mapped[Role] = mapped_column(String, default=Role.ORDINARY_USER)
 
     orders: Mapped[list["Order"]] = relationship(back_populates="user")
-    carts: Mapped[list["Cart"]] = relationship(back_populates="user")
+    cart: Mapped["Cart"] = relationship(back_populates="user")
 
     @property
     def is_super_admin(self) -> bool:
