@@ -18,7 +18,7 @@ class Cart(Base):
 
     order: Mapped["Order"] = relationship(back_populates="cart")
     items: Mapped[list["CartItem"]] = relationship(back_populates="cart")
-    user: Mapped["User"] = relationship(back_populates="carts")
+    user: Mapped["User"] = relationship(back_populates="cart")
 
     @property
     def get_cost(self):
