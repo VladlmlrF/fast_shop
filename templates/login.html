@@ -4,19 +4,36 @@
 {% endblock %}
 
 {% block content %}
-    {% with msg=msg %}
+{% with msg=msg %}
+        {% if msg %}
         {{ msg }}
+        {% endif %}
     {% endwith %}
+{% if not success %}
+    <div>
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    <br>
     <form action="{{ url_for('login') }}" method="post">
-        <label for="username">Username:</label>
+        <label>Username:</label>
         <br>
         <input type="text" name="username" value="{{ username }}" placeholder="Enter your username">
-        <br>
-        <label for="password">Password:</label>
+        <br><br>
+        <label>Password:</label>
         <br>
         <input type="password" name="password" value="{{ password }}" placeholder="Enter your password">
-        <br>
+        <br><br>
         <input type="submit" value="Login">
     </form>
-    <p>Hello, {{ username }}!</p>
+    <br>
+    <form action="{{ url_for('register') }}" method="get">
+        <input type="submit" value="Sign up">
+    </form>
+{% else %}
+    <form action="{{ url_for('product_list') }}" method="get">
+        <input type="submit" value="To the list of products">
+    </form>
+{% endif %}
 {% endblock %}
