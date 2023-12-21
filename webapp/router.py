@@ -61,12 +61,8 @@ async def get_cart(
         session=session, username=current_user_name
     )
     cart = await get_card_by_user_id(session=session, user_id=current_user.id)
-    if cart:
-        return templates.TemplateResponse(
-            "cart.html",
-            {"request": request, "cart": cart, "current_user_name": current_user_name},
-        )
-    cart = await create_cart(session=session, user_id=current_user.id)
+    if not cart:
+        cart = await create_cart(session=session, user_id=current_user.id)
     return templates.TemplateResponse(
         "cart.html",
         {"request": request, "cart": cart, "current_user_name": current_user_name},
