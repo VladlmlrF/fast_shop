@@ -27,6 +27,21 @@ async def get_card_by_user_id(session: AsyncSession, user_id: int) -> Cart | Non
     return cart
 
 
+async def get_cart_item_by_cart_id_and_product_id(
+    session: AsyncSession,
+    cart_id: int,
+    product_id: int,
+):
+    """Get cart_item by cart.id and product.id"""
+    statement = (
+        select(CartItem)
+        .where(CartItem.cart_id == cart_id)
+        .where(CartItem.product_id == product_id)
+    )
+    cart_item: CartItem | None = await session.scalar(statement)
+    return cart_item
+
+
 async def create_cart_item(
     session: AsyncSession,
     cart_id: int,
@@ -38,6 +53,13 @@ async def create_cart_item(
         price = product.price
     else:
         price = 0
+    old_cart_item = await get_cart_item_by_cart_id_and_product_id(
+        session=session, cart_id=cart_id, product_id=cart_item.product_id
+    )
+    if old_cart_item:
+        old_cart_item.quantity += cart_item.quantity
+        await session.commit()
+        return old_cart_item
 
     new_cart_item = CartItem(
         cart_id=cart_id,
