@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import HTTPException
 from fastapi import Request
 from fastapi import responses
 from fastapi import status
@@ -51,7 +52,7 @@ async def register(
 
 
 @router.get("/login", response_class=HTMLResponse)
-async def login(request: Request, msg: str = None):
+async def login(request: Request, msg: str | None = None):
     return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
 
 
@@ -62,13 +63,21 @@ async def login(
 ):
     form = LoginForm(request=request)
     await form.load_data()
-    user = await authenticate_user(
-        session=session, username=form.username, password=form.password
-    )
-    if user:
-        response = templates.TemplateResponse(
-            "login.html", {"request": request, "username": user.username}
-        )
-        await login_for_access_token(response=response, form_data=form, session=session)
-        print(request.cookies)
-        return response
+    if await form.is_valid():
+        try:
+            await authenticate_user(
+                session=session, username=form.username, password=form.password
+            )
+            form.__dict__.update(msg="Login Successful!")
+            form.__dict__.update(success=True)
+            response = templates.TemplateResponse("login.html", form.__dict__)
+            await login_for_access_token(
+                response=response, form_data=form, session=session
+            )
+            return response
+        except HTTPException:
+            form.__dict__.update(msg="")
+            form.__dict__.get("errors").append("Incorrect username or Password")
+            return templates.TemplateResponse("login.html", form.__dict__)
+    form.__dict__.update(success=False)
+    return templates.TemplateResponse("login.html", form.__dict__)
