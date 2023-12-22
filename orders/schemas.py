@@ -11,8 +11,7 @@ class CartItemCreateSchema(CartItemBaseSchema):
     pass
 
 
-class CartItemUpdateSchema(CartItemBaseSchema):
-    price: int
+class CartItemUpdateSchema(BaseModel):
     quantity: int
 
 
