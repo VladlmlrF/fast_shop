@@ -10,7 +10,7 @@
     <p>{{ product.description }}</p>
     <p class="price">${{ product.price }}</p>
     {% if product.available %}
-    <form action="{{ url_for('get_cart') }}" method="get">
+    <form action="{{ url_for('get_cart', product_id=product.id ) }}" method="get">
       <input type="submit" value="Add to cart">
     </form>
     {% else %}
