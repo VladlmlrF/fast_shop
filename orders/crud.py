@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import Cart
 from core.models import CartItem
 from orders.schemas import CartItemCreateSchema
+from orders.schemas import CartItemUpdateSchema
 from products.crud import get_product
 
 
@@ -107,6 +108,29 @@ async def get_cart_items_by_cart_id(
     session: AsyncSession,
     cart_id: int,
 ):
+    """Get cart items by cart.id"""
     statement = select(CartItem).where(CartItem.cart_id == cart_id)
     items: list[CartItem] = list(await session.scalars(statement))
     return items
+
+
+async def get_cart_item_by_id(
+    session: AsyncSession,
+    cart_item_id: int,
+):
+    """Get cart_item by user_id"""
+    statement = select(CartItem).where(CartItem.id == cart_item_id)
+    cart_item: CartItem | None = await session.scalar(statement=statement)
+    return cart_item
+
+
+async def update_cart_item(
+    session: AsyncSession,
+    cart_item: CartItem,
+    cart_item_update: CartItemUpdateSchema,
+) -> CartItem:
+    """Update cart_item"""
+    for name, value in cart_item_update.model_dump(exclude_unset=False).items():
+        setattr(cart_item, name, value)
+    await session.commit()
+    return cart_item
