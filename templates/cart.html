@@ -4,6 +4,12 @@
 {% endblock %}
 
 {% block content%}
-<p>{{ current_user_name }}</p>
-<h1>{{ cart.id }}</h1>
+<h1>Your cart</h1>
+<br>
+{% for product in products %}
+    {% for key, value in product.items() %}
+        <p>{{ key.name }}  quantity: {{value}}</p>
+    {% endfor %}
+{% endfor %}
+<h2>Total cost: $ {{ total_cost }}</h2>
 {% endblock %}
