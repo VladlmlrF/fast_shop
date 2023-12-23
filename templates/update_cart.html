@@ -17,4 +17,8 @@
     {% endfor %}
     <input type="submit" value="OK">
 </form>
+<br>
+<form action="{{ url_for('get_cart') }}">
+    <input type="submit" value="Back to cart">
+</form>
 {% endblock %}
