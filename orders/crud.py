@@ -134,3 +134,9 @@ async def update_cart_item(
         setattr(cart_item, name, value)
     await session.commit()
     return cart_item
+
+
+async def delete_cart_item(session: AsyncSession, cart_item: CartItem):
+    """Delete cart item"""
+    await session.delete(cart_item)
+    await session.commit()
