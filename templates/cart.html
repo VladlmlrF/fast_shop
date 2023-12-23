@@ -13,8 +13,12 @@
 {% endfor %}
 <h2>Total cost: $ {{ total_cost }}</h2>
 
-<form action="#" method="get">
+<form action="{{ url_for('update_cart') }}" method="get">
     <input type="submit" value="Change">
+</form>
+<br>
+<form action="#" method="get">
+    <input type="submit" value="Clear">
 </form>
 <br>
 <form action="#" method="get">
