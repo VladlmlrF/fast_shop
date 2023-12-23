@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Update Cart
+{% endblock %}
+
+{% block content%}
+<form action="{{ url_for('update_cart') }}" method="post">
+    {% for product in products %}
+        {% for key, value in product.items() %}
+            <h2>{{ key }}</h2>
+            <p>Old quantity: {{ value[0] }}</p>
+            <br>
+            <label>New quantity:</label>
+            <input type="number" name="quantity" value="{{ value[1] }}">
+            <br><br>
+        {% endfor %}
+    {% endfor %}
+    <input type="submit" value="OK">
+</form>
+{% endblock %}
