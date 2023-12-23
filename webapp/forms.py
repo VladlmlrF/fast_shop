@@ -1,7 +1,7 @@
 from fastapi import Request
 
 
-class CartUpdateForm:
+class CartItemUpdateForm:
     def __init__(self, request: Request):
         self.request: Request = request
         self.quantity: int | None = None
