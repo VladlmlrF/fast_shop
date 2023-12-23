@@ -12,7 +12,7 @@ class CartItemCreateSchema(CartItemBaseSchema):
 
 
 class CartItemUpdateSchema(BaseModel):
-    quantity: int
+    quantity: int | None = None
 
 
 class CartItemSchema(CartItemBaseSchema):
