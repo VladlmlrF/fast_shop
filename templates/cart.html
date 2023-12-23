@@ -8,7 +8,10 @@
 <br>
 {% for product in products %}
     {% for key, value in product.items() %}
-        <p>{{ key.name }}  quantity: {{value}}</p>
+        <p>{{ key.name }}  quantity: {{value[0]}}</p>
+        <form action="{{ url_for('delete_cart_item_by_id', cart_item_id=value[1] ) }}" method="get">
+            <input type="submit" value="Delete">
+        </form>
     {% endfor %}
 {% endfor %}
 <h2>Total cost: $ {{ total_cost }}</h2>
