@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from fastapi import status
+from sqlalchemy import Result
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -161,3 +162,18 @@ async def create_order(session: AsyncSession, order: OrderCreateSchema, user_id:
     session.add(new_order)
     await session.commit()
     return new_order
+
+
+async def get_orders(
+    session: AsyncSession,
+) -> list[Order]:
+    """Get all orders"""
+    statement = select(Order).order_by(Order.id)
+    result: Result = await session.execute(statement=statement)
+    orders = result.scalars().all()
+    return list(orders)
+
+
+async def get_order_by_id(session: AsyncSession, order_id: int) -> Order | None:
+    """Get order by order.id"""
+    return await session.get(Order, order_id)
