@@ -43,12 +43,10 @@ class OrderBaseSchema(BaseModel):
     address: str
     postal_code: int
     city: str
-    coupon_id: int | None
     discount: int
 
 
 class OrderCreateSchema(OrderBaseSchema):
-    user_id: int
     cart_id: int
 
 
