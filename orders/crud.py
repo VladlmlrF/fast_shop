@@ -5,8 +5,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Cart
 from core.models import CartItem
+from core.models import Order
 from orders.schemas import CartItemCreateSchema
 from orders.schemas import CartItemUpdateSchema
+from orders.schemas import OrderCreateSchema
 from products.crud import get_product
 
 
@@ -140,3 +142,22 @@ async def delete_cart_item(session: AsyncSession, cart_item: CartItem):
     """Delete cart item"""
     await session.delete(cart_item)
     await session.commit()
+
+
+async def create_order(session: AsyncSession, order: OrderCreateSchema, user_id: int):
+    """Create Order"""
+    new_order = Order(
+        first_name=order.first_name,
+        last_name=order.last_name,
+        email=order.email,
+        address=order.address,
+        postal_code=order.postal_code,
+        city=order.city,
+        coupon_id=None,
+        discount=order.discount,
+        user_id=user_id,
+        cart_id=order.cart_id,
+    )
+    session.add(new_order)
+    await session.commit()
+    return new_order
