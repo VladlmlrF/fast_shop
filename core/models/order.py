@@ -23,7 +23,9 @@ class Order(Base):
     city: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     paid: Mapped[bool] = mapped_column(default=False)
-    coupon_id: Mapped[int | None] = mapped_column(ForeignKey("coupons.id"))
+    coupon_id: Mapped[int | None] = mapped_column(
+        ForeignKey("coupons.id"), default=None
+    )
     discount: Mapped[int] = mapped_column(default=0, server_default="0")
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     cart_id: Mapped[int] = mapped_column((ForeignKey("carts.id")))
