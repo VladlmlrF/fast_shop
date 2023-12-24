@@ -80,7 +80,6 @@ async def get_cart(
         product = await get_product(session=session, product_id=item.product_id)
         item_id: int = item.id
         quantity: int = item.quantity
-        products.append({product: quantity})
         products.append({product: [quantity, item_id]})
         item_cost = product.price * quantity
         total_cost += item_cost
