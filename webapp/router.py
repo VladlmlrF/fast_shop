@@ -218,3 +218,20 @@ async def delete_cart_item_by_id(
         context={"request": request},
         status_code=status.HTTP_404_NOT_FOUND,
     )
+
+
+@router.get("/clear_cart", response_class=HTMLResponse)
+async def clear_cart(
+    request: Request,
+    session=Depends(db_helper.scoped_session_dependency),
+    current_user_name: str = Depends(get_current_user_name),
+):
+    current_user: User | None = await get_user_by_username(
+        session=session, username=current_user_name
+    )
+    cart = await get_card_by_user_id(session=session, user_id=current_user.id)
+    items = await get_cart_items_by_cart_id(session=session, cart_id=cart.id)
+    for item in items:
+        await delete_cart_item(session=session, cart_item=item)
+    redirect_url = request.url_for("get_cart")
+    return RedirectResponse(redirect_url)
