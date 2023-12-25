@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 
 from .auth.router import router as auth_router
 from .forms import CartItemUpdateForm
+from .order.router import router as order_router
 from auth.utils import get_current_user_name
 from auth.utils import get_user_by_username
 from core.models import db_helper
@@ -27,6 +28,7 @@ from products.crud import get_products
 
 router = APIRouter(tags=["Webapp"])
 router.include_router(auth_router, prefix="/auth")
+router.include_router(order_router, prefix="/order")
 
 templates = Jinja2Templates(directory="templates")
 
