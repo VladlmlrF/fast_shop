@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+    Order
+{% endblock %}
+
+{% block content %}
+    {% with msg=msg %}
+        {% if msg %}
+        {{ msg }}
+        {% endif %}
+    {% endwith %}
+    <h2>Create your Order</h2>
+    <div>
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    <form action="{{ url_for('order') }}" method="post">
+        <label>First name: </label>
+        <input type="text" name="first_name" value="{{ first_name }}" placeholder="First name">
+        <br>
+        <label>Last name: </label>
+        <input type="text" name="last_name" value="{{ last_name }}" placeholder="Last name">
+        <br>
+        <label>Email: </label>
+        <input type="email" name="email" value="{{ email }}" placeholder="Email">
+        <br>
+        <label>Address: </label>
+        <input type="text" name="address" value="{{ address }}" placeholder="Address">
+        <br>
+        <label>Postal code: </label>
+        <input type="text" name="postal_code" value="{{ postal_code }}" placeholder="Postal code">
+        <br>
+        <label>City: </label>
+        <input type="text" name="city" value="{{ city }}" placeholder="City">
+        <br><br>
+        <input type="submit" value="Create order">
+    </form>
+{% endblock %}
